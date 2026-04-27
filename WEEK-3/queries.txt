@@ -1,0 +1,130 @@
+CREATE TABLE SALESPERSON
+(
+  sp_id INT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (sp_id)
+);
+
+CREATE TABLE CUSTOMER
+(
+  customer_id INT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  phone_no INT NOT NULL,
+  PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE CARS
+(
+  serial_no VARCHAR(20) NOT NULL,
+  model VARCHAR(20) NOT NULL,
+  colour VARCHAR(20) NOT NULL,
+  sp_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  PRIMARY KEY (serial_no),
+  FOREIGN KEY (sp_id) REFERENCES SALESPERSON(sp_id),
+  FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id)
+);
+
+CREATE TABLE INVOICE
+(
+  sp_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  PRIMARY KEY (sp_id, customer_id),
+  FOREIGN KEY (sp_id) REFERENCES SALESPERSON(sp_id),
+  FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id)
+);
+
+CREATE TABLE SERVICE_RECORD
+(
+  service_ticket VARCHAR(20) NOT NULL,
+  service_date DATE NOT NULL,
+  serial_no VARCHAR(20) NOT NULL,
+  PRIMARY KEY (service_ticket),
+  FOREIGN KEY (serial_no) REFERENCES CARS(serial_no)
+);
+
+CREATE TABLE MECHANICS
+(
+  mechanic_id INT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (mechanic_id)
+);
+
+CREATE TABLE PARTS
+(
+  parts_name VARCHAR(20) NOT NULL,
+  parts_id INT NOT NULL,
+  PRIMARY KEY (parts_id)
+);
+
+CREATE TABLE WORKS_ON
+(
+  serial_no VARCHAR(20) NOT NULL,
+  mechanic_id INT NOT NULL,
+  PRIMARY KEY (serial_no, mechanic_id),
+  FOREIGN KEY (serial_no) REFERENCES CARS(serial_no),
+  FOREIGN KEY (mechanic_id) REFERENCES MECHANICS(mechanic_id)
+);
+
+CREATE TABLE NEEDS
+(
+  service_ticket VARCHAR(20) NOT NULL,
+  parts_id INT NOT NULL,
+  PRIMARY KEY (service_ticket, parts_id),
+  FOREIGN KEY (service_ticket) REFERENCES SERVICE_RECORD(service_ticket),
+  FOREIGN KEY (parts_id) REFERENCES PARTS(parts_id)
+);
+
+INSERT INTO SALESPERSON VALUES(101, 'Sadia');
+INSERT INTO SALESPERSON VALUES(103, 'MAARIYAH');
+INSERT INTO SALESPERSON VALUES(111, 'Maria');
+INSERT INTO SALESPERSON VALUES(118, 'Sadia PZ');
+INSERT INTO SALESPERSON VALUES(107, 'Hania');
+
+INSERT INTO CUSTOMER VALUES(11, 'Haseen', 123456789);
+INSERT INTO CUSTOMER VALUES(12, 'Talat', 123333789);
+INSERT INTO CUSTOMER VALUES(13, 'Fatima', 123444789);
+INSERT INTO CUSTOMER VALUES(14, 'Monika', 123422289);
+INSERT INTO CUSTOMER VALUES(15, 'Saniya', 123777789);
+
+INSERT INTO CARS VALUES ('AB12', 'model1', 'black', 101, 11);
+INSERT INTO CARS VALUES ('AB13', 'model2', 'White', 101, 12);
+INSERT INTO CARS VALUES ('AB14', 'model3', 'black', 103, 13);
+INSERT INTO CARS VALUES ('AB15', 'model4', 'Red', 111, 14);
+INSERT INTO CARS VALUES ('AB16', 'model5', 'black', 118, 15);
+
+INSERT INTO INVOICE VALUES (101, 11);
+INSERT INTO INVOICE VALUES (101, 12);
+INSERT INTO INVOICE VALUES (103, 13);
+INSERT INTO INVOICE VALUES (111, 14);
+INSERT INTO INVOICE VALUES (118, 15);
+
+insert into service_record values (1, '01/01/2026', 'AB12');
+insert into service_record values (2, '01/01/2026', 'AB13');
+insert into service_record values (3, '01/01/2026', 'AB14');
+insert into service_record values (4, '01/01/2026', 'AB15');
+insert into service_record values (5, '01/01/2026', 'AB16');
+
+insert into mechanics values (123, 'ALIZA');
+insert into mechanics values (124, 'ZOHA');
+insert into mechanics values (125, 'ASNA');
+insert into mechanics values (126, 'ZOYA');
+insert into mechanics values (127, 'HAMZA');
+
+INSERT INTO PARTS VALUES ('tyre', 01);
+INSERT INTO PARTS VALUES ('suspension', 02);
+INSERT INTO PARTS VALUES ('mirror', 03);
+INSERT INTO PARTS VALUES ('wiper', 04);
+INSERT INTO PARTS VALUES ('seat cover', 05);
+
+INSERT INTO WORKS_ON VALUES ('AB12', 123);
+INSERT INTO WORKS_ON VALUES ('AB13', 124);
+INSERT INTO WORKS_ON VALUES ('AB14', 125);
+INSERT INTO WORKS_ON VALUES ('AB15', 126);
+INSERT INTO WORKS_ON VALUES ('AB16', 127);
+
+INSERT INTO NEEDS VALUES (1, 01);
+INSERT INTO NEEDS VALUES (2, 02);
+INSERT INTO NEEDS VALUES (3, 03);
+INSERT INTO NEEDS VALUES (4, 04);
+INSERT INTO NEEDS VALUES (5, 05);

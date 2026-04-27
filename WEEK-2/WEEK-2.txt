@@ -1,0 +1,40 @@
+create table Student(id int , name varchar(50) , enrollment_no varchar(10) , course varchar(100) , semester int);
+desc Student;
+alter table Student add primary key(id);
+insert into Student values(101, 'sadia', 1234 , 'ABC123' , 3);
+Select * from Student;
+
+create table Instructor(ins_id int PRIMARY KEY , name varchar(50) , designation varchar(100) , experience int);
+desc Instructor;
+insert into Instructor values(3412, 'Naved' , 'assistant professor' , 3);
+Select * from Instructor;
+
+create table Computer_System(system_id int , Processor varchar(100) , ram varchar(10) , Operarting_System varchar (100) , room_no int);
+desc Computer_System;
+alter table Computer_System add primary key(system_id);
+insert into Computer_System values(1098, 'intel'; , '8GB' , 'MacOS' , 3);
+Select * from Computer_System;
+
+CREATE TABLE Lab_Session(sess_id number Primary Key, Session_date DATE, time varchar(20), subject varchar(100));
+desc Lab_session;
+insert into Lab_Session values(001, '12-10-26' , '10:00 AM' , 'Java LAB');
+alter table Lab_Session add ins_id int;
+alter table Lab_Session add foreign key(ins_id) references Instructor(ins_id);
+
+desc Lab_Session;
+Select * from Lab_Session;
+
+create table new_table(id int ,sess_id int, primary key (id, sess_id), foreign key (id) references Student(id), foreign key (sess_id) references Lab_Session(sess_id) );
+update 
+desc Student;
+desc new_table;
+
+create table comp_key(sess_id int, system_id int, primary key (sess_id, system_id), foreign key (sess_id) references Lab_Session(sess_id), foreign key (system_id) references Computer_System(system_id));
+insert into comp_key values (001,1098);
+Select * from comp_key;
+desc comp_key;
+update Lab_Session set ins_id=3412 where sess_id=1;
+
+
+
+

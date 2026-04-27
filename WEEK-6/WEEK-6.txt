@@ -1,0 +1,80 @@
+create table patient(
+patient_id number primary key,
+patient_name varchar(50),
+age number,
+gender varchar(10),
+contact_no varchar(10)
+); 
+
+create table doctor(
+doctor_id int primary key,
+doctor_name varchar(50),
+specialization varchar (30),
+room_no int
+);
+
+create table appointment (
+appointment_id NUMBER primary key,
+patient_id INT,
+doctor_id INT,
+FOREIGN KEY (patient_id) REFERENCES patient (patient_id),
+FOREIGN KEY (doctor_id) REFERENCES doctor (doctor_id),
+appointment_date DATE,
+appointment_time varchar(10)
+);
+
+insert into patient values (1, 'sadia', 19, 'female', 123457891);
+insert into patient values (2, 'nashra', 29, 'female', 123457891);
+insert into patient values (3, 'asna', 39, 'female', 123457892);
+insert into patient values (4, 'maariyah', 91, 'female', 123457893);
+insert into patient values (5, 'maria', 99, 'female', 123457894);
+
+insert into doctor values (101, 'faisal', 'cardiology', 2);
+insert into doctor values (102, 'osman', 'radiology', 3);
+insert into doctor values (103, 'ahmed', 'pediatrics', 4);
+insert into doctor values (104, 'tehseen', 'nephrology', 5);
+insert into doctor values (105, 'shireen', 'gynaecology', 6);
+
+insert into appointment values(10, 1, 101,TO_DATE('22-02-2026', 'DD-MM-YYYY'),'10:00 AM');
+insert into appointment values(11, 2, 102,TO_DATE('15-02-2026', 'DD-MM-YYYY'),'10:00 AM');
+insert into appointment values(12, 3, 103,TO_DATE('28-02-2026', 'DD-MM-YYYY'),'08:00 AM');
+insert into appointment values(13, 4, 104,TO_DATE('21-02-2026', 'DD-MM-YYYY'),'09:00 AM');
+insert into appointment values(14, 5, 105,TO_DATE('12-02-2026', 'DD-MM-YYYY'),'11:00 AM');
+
+
+select * from doctor;
+select * from patient;
+select * from appointment where patient_id=1;
+select * from appointment where patient_id=11;
+
+select doctor_name,specialization
+from doctor;
+
+select * from patient 
+where (age>50);
+
+select d.doctor_name,
+a.appointment_id,
+a.appointment_date
+FROM doctor d
+JOIN patient_appointment a
+on d.doctor_id=a.doctor_id;
+
+UPDATE patient 
+set contact_no=124355551
+where patient_id=1;
+ 
+
+update doctor
+set room_no =7
+where doctor_id=101;
+
+update appointment 
+set appointment_date=TO_DATE('23-03-2026', 'DD-MM-YY'), '09:00 AM')
+where appointment_id=10;
+
+delete from patient where patient_id not in (select patient_id from appointment);
+alter table patient add email varchar(30);
+alter table patient MODIFY contact_no varchar2(15);
+rename appointment to patient_appointment;
+drop table doctor;

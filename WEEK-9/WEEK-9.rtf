@@ -1,0 +1,89 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2869
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 DROP TABLE Sales_Order;\
+DROP TABLE Salesman;\
+DROP TABLE Client;\
+DROP TABLE Product;\
+\
+CREATE TABLE Product (\
+    Product_No INT PRIMARY KEY,\
+    Product_Name VARCHAR(50),\
+    Selling_Price DECIMAL(10,2),\
+    Manufacturer_Name VARCHAR(50)\
+);\
+\
+CREATE TABLE Client (\
+    Client_ID INT PRIMARY KEY,\
+    Client_Name VARCHAR(50),\
+    Address VARCHAR(100),\
+    City VARCHAR(50),\
+    Pin_Code VARCHAR(10),\
+    Balance DECIMAL(10,2)\
+);\
+\
+CREATE TABLE Salesman (\
+    Salesman_ID INT PRIMARY KEY,\
+    Name VARCHAR(50),\
+    Address VARCHAR(100),\
+    City VARCHAR(50),\
+    Pin_Code VARCHAR(10),\
+    Salary DECIMAL(10,2)\
+);\
+\
+CREATE TABLE Sales_Order (\
+    Order_No INT PRIMARY KEY,\
+    Order_Date DATE,\
+    Client_ID INT,\
+    Salesman_ID INT,\
+    FOREIGN KEY (Client_ID) REFERENCES Client(Client_ID),\
+    FOREIGN KEY (Salesman_ID) REFERENCES Salesman(Salesman_ID)\
+);\
+\
+INSERT INTO Product VALUES (1, 'Laptop', 50000, 'Dell');\
+INSERT INTO Product VALUES (2, 'Mobile', 20000, 'Samsung');\
+INSERT INTO Product VALUES (3, 'Tablet', 15000, 'Lenovo');\
+INSERT INTO Product VALUES (4, 'Printer', 8000, 'HP');\
+INSERT INTO Product VALUES (5, 'Mouse', 500, 'Logitech');\
+\
+INSERT INTO Client VALUES (101, 'Aman', 'Street 1', 'ALIGARH', '202001', 10000);\
+INSERT INTO Client VALUES (102, 'Riya', 'Street 2', 'DELHI', '110001', 5000);\
+INSERT INTO Client VALUES (103, 'Karan', 'Street 3', 'ALIGARH', '202002', 7000);\
+INSERT INTO Client VALUES (104, 'Sara', 'Street 4', 'MUMBAI', '400001', 3000);\
+INSERT INTO Client VALUES (105, 'Arjun', 'Street 5', 'ALIGARH', '202003', 9000);\
+\
+INSERT INTO Salesman VALUES (201, 'Raj', 'Addr1', 'DELHI', '110001', 25000);\
+INSERT INTO Salesman VALUES (202, 'Vikram', 'Addr2', 'ALIGARH', '202001', 22000);\
+INSERT INTO Salesman VALUES (203, 'Neha', 'Addr3', 'MUMBAI', '400001', 27000);\
+INSERT INTO Salesman VALUES (204, 'Pooja', 'Addr4', 'DELHI', '110002', 24000);\
+INSERT INTO Salesman VALUES (205, 'Amit', 'Addr5', 'ALIGARH', '202002', 26000);\
+\
+INSERT INTO Sales_Order VALUES (301, '2026-04-01', 101, 201);\
+INSERT INTO Sales_Order VALUES (302, '2026-04-02', 102, 202);\
+INSERT INTO Sales_Order VALUES (303, '2026-04-03', 103, 203);\
+INSERT INTO Sales_Order VALUES (304, '2026-04-04', 104, 204);\
+INSERT INTO Sales_Order VALUES (305, '2026-04-05', 105, 205);\
+\
+SELECT Client_Name, City FROM Client;\
+\
+SELECT * FROM Product;\
+\
+SELECT Client_Name\
+FROM Client\
+WHERE Client_Name LIKE '_a%';\
+\
+SELECT *\
+FROM Client\
+WHERE City = 'ALIGARH';\
+\
+SELECT *\
+FROM Product\
+WHERE Selling_Price <= 5000;\
+\
+SELECT *\
+FROM Product\
+ORDER BY Selling_Price;}

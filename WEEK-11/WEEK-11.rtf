@@ -1,0 +1,156 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2869
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww29200\viewh15680\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 DROP TABLE Syllabus;\
+DROP TABLE Course;\
+DROP TABLE Faculty;\
+DROP TABLE Program;\
+DROP TABLE Department;\
+DROP TABLE University;\
+\
+CREATE TABLE University (\
+    University_ID INT PRIMARY KEY,\
+    University_Name VARCHAR(100),\
+    Location VARCHAR(50),\
+    Established_Year INT\
+);\
+\
+CREATE TABLE Department (\
+    Department_ID INT PRIMARY KEY,\
+    Department_Name VARCHAR(100),\
+    University_ID INT,\
+    HOD VARCHAR(50),\
+    FOREIGN KEY (University_ID) REFERENCES University(University_ID)\
+);\
+\
+CREATE TABLE Program (\
+    Program_ID INT PRIMARY KEY,\
+    Program_Name VARCHAR(50),\
+    Duration INT,\
+    University_ID INT,\
+    FOREIGN KEY (University_ID) REFERENCES University(University_ID)\
+);\
+\
+CREATE TABLE Course (\
+    Course_ID INT PRIMARY KEY,\
+    Course_Name VARCHAR(100),\
+    Program_ID INT,\
+    Credits INT,\
+    FOREIGN KEY (Program_ID) REFERENCES Program(Program_ID)\
+);\
+\
+CREATE TABLE Syllabus (\
+    Syllabus_ID INT PRIMARY KEY,\
+    Course_ID INT,\
+    Content VARCHAR(200),\
+    Semester INT,\
+    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)\
+);\
+\
+CREATE TABLE Faculty (\
+    Faculty_ID INT PRIMARY KEY,\
+    Faculty_Name VARCHAR(50),\
+    Specialization VARCHAR(100),\
+    Department_ID INT,\
+    FOREIGN KEY (Department_ID) REFERENCES Department(Department_ID)\
+);\
+\
+CREATE INDEX idx_university_name ON University(University_Name);\
+CREATE INDEX idx_department_name ON Department(Department_Name);\
+CREATE INDEX idx_program_name ON Program(Program_Name);\
+CREATE INDEX idx_course_name ON Course(Course_Name);\
+CREATE INDEX idx_syllabus_course ON Syllabus(Course_ID);\
+CREATE INDEX idx_faculty_specialization ON Faculty(Specialization);\
+\
+INSERT INTO University VALUES (1, 'AMU', 'Aligarh', 1920);\
+INSERT INTO University VALUES (2, 'JNU', 'Delhi', 1969);\
+INSERT INTO University VALUES (3, 'University of Mumbai', 'Mumbai', 1857);\
+INSERT INTO University VALUES (4, 'University of Jammu', 'Jammu', 1969);\
+INSERT INTO University VALUES (5, 'Delhi University', 'Delhi', 1922);\
+\
+INSERT INTO Department VALUES (101, 'Computer Science', 1, 'Dr A');\
+INSERT INTO Department VALUES (102, 'Computer Science', 2, 'Dr B');\
+INSERT INTO Department VALUES (103, 'IT', 3, 'Dr C');\
+INSERT INTO Department VALUES (104, 'Computer Science', 4, 'Dr D');\
+INSERT INTO Department VALUES (105, 'Computer Science', 5, 'Dr E');\
+\
+INSERT INTO Program VALUES (201, 'MCA', 3, 1);\
+INSERT INTO Program VALUES (202, 'BCA', 3, 1);\
+INSERT INTO Program VALUES (203, 'MCA', 3, 2);\
+INSERT INTO Program VALUES (204, 'MBA', 2, 3);\
+INSERT INTO Program VALUES (205, 'MCA', 3, 4);\
+\
+INSERT INTO Course VALUES (301, 'Data Structures', 201, 4);\
+INSERT INTO Course VALUES (302, 'Computer Architecture', 201, 4);\
+INSERT INTO Course VALUES (303, 'DBMS', 203, 4);\
+INSERT INTO Course VALUES (304, 'Networks', 205, 4);\
+INSERT INTO Course VALUES (305, 'OS', 202, 4);\
+\
+INSERT INTO Syllabus VALUES (401, 302, 'CPU Design', 1);\
+INSERT INTO Syllabus VALUES (402, 302, 'Memory Systems', 2);\
+INSERT INTO Syllabus VALUES (403, 303, 'Normalization', 1);\
+INSERT INTO Syllabus VALUES (404, 304, 'Routing', 2);\
+INSERT INTO Syllabus VALUES (405, 305, 'Process Management', 1);\
+\
+INSERT INTO Faculty VALUES (501, 'Ali', 'Information Security', 101);\
+INSERT INTO Faculty VALUES (502, 'Sara', 'AI', 102);\
+INSERT INTO Faculty VALUES (503, 'John', 'Data Science', 103);\
+INSERT INTO Faculty VALUES (504, 'Ayesha', 'Information Security', 104);\
+INSERT INTO Faculty VALUES (505, 'Zaid', 'Information Security', 105);\
+\
+SELECT * FROM University WHERE Location = 'Mumbai';\
+\
+SELECT P.Program_Name\
+FROM Program P\
+JOIN University U ON P.University_ID = U.University_ID\
+WHERE U.University_Name = 'AMU';\
+\
+SELECT D.Department_Name\
+FROM Department D\
+JOIN University U ON D.University_ID = U.University_ID\
+WHERE U.University_Name = 'JNU';\
+\
+SELECT P.Program_Name\
+FROM Program P\
+JOIN University U ON P.University_ID = U.University_ID\
+WHERE U.University_Name = 'University of Jammu';\
+\
+SELECT DISTINCT U.University_Name\
+FROM University U\
+JOIN Program P ON U.University_ID = P.University_ID\
+WHERE P.Program_Name = 'MCA';\
+\
+SELECT C.Course_Name\
+FROM Course C\
+JOIN Program P ON C.Program_ID = P.Program_ID\
+JOIN University U ON P.University_ID = U.University_ID\
+WHERE P.Program_Name = 'MCA' AND U.University_Name = 'AMU';\
+\
+SELECT Faculty_Name\
+FROM Faculty\
+WHERE Specialization = 'Information Security';\
+\
+SELECT U.University_Name, S.Content\
+FROM Syllabus S\
+JOIN Course C ON S.Course_ID = C.Course_ID\
+JOIN Program P ON C.Program_ID = P.Program_ID\
+JOIN University U ON P.University_ID = U.University_ID\
+WHERE C.Course_Name = 'Computer Architecture';\
+\
+SELECT F.Faculty_Name, F.Specialization\
+FROM Faculty F\
+JOIN Department D ON F.Department_ID = D.Department_ID\
+JOIN University U ON D.University_ID = U.University_ID\
+WHERE D.Department_Name = 'Computer Science'\
+AND U.University_Name = 'Delhi University';\
+\
+SELECT U.University_Name\
+FROM University U\
+JOIN Program P ON U.University_ID = P.University_ID\
+GROUP BY U.University_Name\
+ORDER BY COUNT(P.Program_ID) DESC\
+LIMIT 1;}

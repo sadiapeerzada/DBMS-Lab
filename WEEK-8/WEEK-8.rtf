@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2869
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww19440\viewh15680\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 DROP TABLE Issue;\
+DROP TABLE Book;\
+DROP TABLE Student;\
+\
+CREATE TABLE Student (\
+    Student_ID INT PRIMARY KEY,\
+    Student_Name VARCHAR(50) NOT NULL,\
+    Course VARCHAR(50) NOT NULL,\
+    Mobile_No VARCHAR(15) UNIQUE\
+);\
+\
+CREATE TABLE Book (\
+    Book_ID INT PRIMARY KEY,\
+    Book_Title VARCHAR(100) NOT NULL,\
+    Author VARCHAR(50) NOT NULL,\
+    Price DECIMAL(10,2) CHECK (Price > 0)\
+);\
+\
+CREATE TABLE Issue (\
+    Issue_ID INT PRIMARY KEY,\
+    Student_ID INT,\
+    Book_ID INT,\
+    Issue_Date DATE NOT NULL,\
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),\
+    FOREIGN KEY (Book_ID) REFERENCES Book(Book_ID)\
+);\
+\
+INSERT INTO Student VALUES (1, 'Ali Khan', 'BSc CA', '9876543210');\
+INSERT INTO Student VALUES (2, 'Sara Ahmed', 'BSc IT', '9876543211');\
+INSERT INTO Student VALUES (3, 'John Doe', 'BCA', '9876543212');\
+INSERT INTO Student VALUES (4, 'Ayesha Noor', 'BSc CS', '9876543213');\
+INSERT INTO Student VALUES (5, 'Zaid Malik', 'BSc CA', '9876543214');\
+\
+INSERT INTO Book VALUES (101, 'DBMS Concepts', 'Korth', 450);\
+INSERT INTO Book VALUES (102, 'Operating Systems', 'Galvin', 550);\
+INSERT INTO Book VALUES (103, 'Computer Networks', 'Tanenbaum', 600);\
+INSERT INTO Book VALUES (104, 'Data Structures', 'Seymour Lipschutz', 400);\
+INSERT INTO Book VALUES (105, 'C Programming', 'Dennis Ritchie', 300);\
+\
+INSERT INTO Issue VALUES (1, 1, 101, '2026-04-01');\
+INSERT INTO Issue VALUES (2, 2, 102, '2026-04-02');\
+INSERT INTO Issue VALUES (3, 3, 103, '2026-04-03');\
+INSERT INTO Issue VALUES (4, 4, 104, '2026-04-04');\
+INSERT INTO Issue VALUES (5, 5, 105, '2026-04-05');\
+\
+INSERT INTO Student VALUES (6, 'Test User', 'BSc CA', '9876543210');\
+INSERT INTO Book VALUES (106, 'Invalid Book', 'Unknown', -100);\
+INSERT INTO Issue VALUES (6, 99, 101, '2026-04-06');\
+\
+SELECT * FROM Student;\
+SELECT * FROM Book;\
+\
+SELECT S.Student_Name, B.Book_Title\
+FROM Student S\
+JOIN Issue I ON S.Student_ID = I.Student_ID\
+JOIN Book B ON I.Book_ID = B.Book_ID;}
