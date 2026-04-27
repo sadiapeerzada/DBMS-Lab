@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2869
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 CREATE OR REPLACE FUNCTION basic_calc(a NUMBER, b NUMBER, op VARCHAR2)\
+RETURN NUMBER\
+AS\
+    res NUMBER;\
+BEGIN\
+    IF op = '+' THEN\
+        res := a + b;\
+    ELSIF op = '-' THEN\
+        res := a - b;\
+    ELSIF op = '*' THEN\
+        res := a * b;\
+    ELSIF op = '/' THEN\
+        IF b = 0 THEN\
+            DBMS_OUTPUT.PUT_LINE('Division by zero error');\
+            RETURN NULL;\
+        END IF;\
+        res := a / b;\
+    ELSE\
+        DBMS_OUTPUT.PUT_LINE('Invalid operator');\
+        RETURN NULL;\
+    END IF;\
+\
+    RETURN res;\
+END;\
+/\
+\
+-- Execute\
+SELECT basic_calc(10, 5, '+') FROM dual;}
